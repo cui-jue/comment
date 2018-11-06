@@ -14,10 +14,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class SSHTest {
 	
 	@Resource
-	private Date date;
+	private UserDao dao;
 	
 	@Test
-	public void sshTest() {
-		System.out.println(date);
+	public void sshTest() throws Exception {
+		System.out.println(dao.getUserById(1));
 	}
 }
