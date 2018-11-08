@@ -1,4 +1,4 @@
-package com.cui.comment.controller;
+package com.cui.comment.controller.api;
 
 import java.io.IOException;
 import java.util.HashMap;
