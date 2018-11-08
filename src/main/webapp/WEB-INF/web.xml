@@ -33,4 +33,13 @@
   	<servlet-name>springmvc</servlet-name>
   	<url-pattern>/</url-pattern>
   </servlet-mapping>
+  
+  <!-- 为每一个jsp文件都导入common.jsp -->
+  <jsp-config>
+  	<jsp-property-group>
+  		<url-pattern>*.jsp</url-pattern>
+  		<include-prelude>classpath:jsp/system/common.jsp</include-prelude>
+  	</jsp-property-group>
+  </jsp-config>
 </web-app>
+
