@@ -32,7 +32,7 @@
 		<!-- 数据源 -->
 		<property name="dataSource" ref="dataSource" />
 
-		<property name="mapperLocations" value="classpath:mapper/User.xml"></property>
+		<property name="mapperLocations" value="classpath:mapper/UserDao.xml"></property>
 	</bean>
 
 	<!-- 批量导入mapper -->
