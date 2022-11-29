@@ -57,12 +57,15 @@ async function startDown() {
         let newPage = GM_openInTab(openUrls[i], { active: true, insert: true, setParent: true });
         await waitingClose(newPage);
     }
+    GM_setClipboard(GM_getValue('urls'));
 }
 
 function waitingClose(newPage) {
     return new Promise(resolve => {
         let doing = setInterval(function () {
-            if (newPage.closed || GM_getValue('tabIsClose')) {
+            if (newPage && newPage.closed || GM_getValue('tabIsClose')) {
+                //打开页面之前默认是没有关闭状态
+                GM_setValue('tabIsClose', false);
                 clearInterval(doing);//停止定时器
                 resolve('done');
             }
@@ -98,36 +101,26 @@ function waitingTime(time) {
 $(document).ready(function() {
     GM_setValue('tabIsClose', false);
     let url = window.location.href;
-    //alert(GM_getValue("readingUrl"));
     createStartButton();
-    //GM_setValue('readingUrl', undefined)
-    //alert(typeof GM_getValue("readingUrl"));
-    window.onbeforeunload = function (e) {
-        var message = 'some word';
-        e = e || window.event;
-        alert(23)
-        if (e) {
-            e.returnValue = message;
-        }
-
-        return message;
-    };
     if (url == GM_getValue('readingUrl')) {
         var time = 1;
         // 是否嗅探出资源，如果已经嗅探出，就不需要在进行嗅探
         var resourceIs = false
         time = parseInt(Math.random() * (8 - 4 + 1) + 4, 10);
-        alert(time)
         var readingInterval = setInterval(function () {
             time--;
             var srcObject = JSON.parse(mbrowser.getSniffMediaResource());
             if(Object.keys(srcObject).length !=0 && !resourceIs) {
                 resourceIs = true;
-                GM_download({
-                    url: srcObject['src'],
-                    name: srcObject['title'],
-                    confirm: false,
-                })
+                let urlStrings = GM_getValue('urls') || '';
+                urlStrings = urlStrings + ',' + srcObject['src'];
+                GM_setValue('urls');
+                //GM_download({
+                //    url: srcObject['src'],
+                //    name: srcObject['title'],
+                //    confirm: false,
+                //    tag: srcObject['title'],
+                //})
             }
 
             if (time <= 0) {
